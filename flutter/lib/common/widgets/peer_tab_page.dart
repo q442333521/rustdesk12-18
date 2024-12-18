@@ -24,6 +24,15 @@ import '../../models/platform_model.dart';
 
 const kOptionPeerSorting = 'peer-sorting';
 
+enum PeerSortType { 
+  name,
+  status,
+  platform,
+  dateCreated,
+  dateLastConnected,
+  remoteId
+}
+
 class PeerTabPage extends StatefulWidget {
   const PeerTabPage({Key? key}) : super(key: key);
   @override
@@ -58,8 +67,10 @@ class _PeerTabPageState extends State<PeerTabPage>
     ),
   ];
   RelativeRect? mobileTabContextMenuPos;
-
+  final TextEditingController peerSearchTextController = TextEditingController();
+  String peerSearchText = '';
   final isOptVisiableFixed = isOptionFixed(kOptionPeerTabVisible);
+  final hideAbTagsPanel = false.obs;
 
   _PeerTabPageState() {
     _loadLocalOptions();
@@ -76,6 +87,12 @@ class _PeerTabPageState extends State<PeerTabPage>
     }
     hideAbTagsPanel.value =
         bind.mainGetLocalOption(key: kOptionHideAbTagsPanel) == 'Y';
+  }
+
+  @override
+  void dispose() {
+    peerSearchTextController.dispose();
+    super.dispose();
   }
 
   Future<void> handleTabSelection(int tabIndex) async {

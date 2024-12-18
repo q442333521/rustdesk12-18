@@ -2497,3 +2497,57 @@ Widget trustedDevicesTable(
         )),
   );
 }
+void setPasswordDialog({Function? notEmptyCallback}) {
+  final controller = TextEditingController();
+  bool isInProgress = false;
+  String? errorText;
+  gFFI.dialogManager.show((setState, close, context) {
+    submit() async {
+      final text = controller.text.trim();
+      if (text.isEmpty) {
+        setState(() => errorText = translate("Please enter your password"));
+        return;
+      }
+      if (notEmptyCallback != null) {
+        await bind.mainSetPermanentPassword(password: text);
+        notEmptyCallback();
+      }
+      close();
+    }
+
+    return CustomAlertDialog(
+      title: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Icon(Icons.password_rounded, color: MyTheme.accent),
+          Text(translate('Set Password')).paddingOnly(left: 10),
+        ],
+      ),
+      content: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          PasswordWidget(
+            controller: controller,
+            errorText: errorText,
+          ),
+          isInProgress ? const LinearProgressIndicator() : Offstage(),
+        ],
+      ),
+      actions: [
+        dialogButton(
+          'Cancel',
+          icon: Icon(Icons.close_rounded),
+          onPressed: close,
+          isOutline: true,
+        ),
+        dialogButton(
+          'OK',
+          icon: Icon(Icons.done_rounded), 
+          onPressed: submit,
+        ),
+      ],
+      onSubmit: submit,
+      onCancel: close,
+    );
+  });
+}
