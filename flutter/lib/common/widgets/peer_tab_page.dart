@@ -45,21 +45,6 @@ class _PeerTabPageState extends State<PeerTabPage>
     with SingleTickerProviderStateMixin {
   final List<_TabEntry> entries = [
     _TabEntry(
-        RecentPeersView(
-          menuPadding: _menuPadding(),
-        ),
-        bind.mainLoadRecentPeers),
-    _TabEntry(
-        FavoritePeersView(
-          menuPadding: _menuPadding(),
-        ),
-        bind.mainLoadFavPeers),
-    _TabEntry(
-        DiscoveredPeersView(
-          menuPadding: _menuPadding(),
-        ),
-        bind.mainDiscover),
-    _TabEntry(
         AddressBook(
           menuPadding: _menuPadding(),
         ),
