@@ -54,19 +54,16 @@ class _PeerTabPageState extends State<PeerTabPage>
     _TabEntry(
         RecentPeersView(
           menuPadding: _menuPadding(),
-          emptyBuilder: (context) => SizedBox(), // 空白内容
         ),
         bind.mainLoadRecentPeers),
     _TabEntry(
         FavoritePeersView(
           menuPadding: _menuPadding(),
-          emptyBuilder: (context) => SizedBox(), // 空白内容
         ),
         bind.mainLoadFavPeers),
     _TabEntry(
         DiscoveredPeersView(
           menuPadding: _menuPadding(),
-          emptyBuilder: (context) => SizedBox(), // 空白内容
         ),
         bind.mainDiscover),
     _TabEntry(
@@ -102,8 +99,12 @@ class _PeerTabPageState extends State<PeerTabPage>
       if (tabIndex != gFFI.peerTabModel.currentTab) {
         gFFI.peerTabModel.setCurrentTabCachedPeers([]);
       }
+      // 设置当前标签页
       gFFI.peerTabModel.setCurrentTab(tabIndex);
-      entries[tabIndex].load(hint: false);
+      // 只有通讯录标签页需要加载数据
+      if (tabIndex == 0) {
+        entries[tabIndex].load(hint: false);
+      }
     }
   }
 
@@ -214,7 +215,10 @@ class _PeerTabPageState extends State<PeerTabPage>
       child = entries[0].widget;
     } else {
       // 其他标签页显示空白
-      child = const SizedBox();
+      child = Container(
+        color: Theme.of(context).scaffoldBackgroundColor,
+        child: const SizedBox.expand(),
+      );
     }
     return Expanded(
         child: child.marginSymmetric(
