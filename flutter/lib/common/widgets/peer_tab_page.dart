@@ -90,6 +90,16 @@ class _PeerTabPageState extends State<PeerTabPage>
   }
 
   @override
+  void initState() {
+    super.initState();
+    // 设置通讯录为默认标签页并加载
+    Future.delayed(Duration.zero, () async {
+      await handleTabSelection(0);
+      entries[0].load();
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
     final model = Provider.of<PeerTabModel>(context);
     Widget selectionWrap(Widget widget) {
@@ -178,22 +188,7 @@ class _PeerTabPageState extends State<PeerTabPage>
 
   Widget _createPeersView() {
     final model = Provider.of<PeerTabModel>(context);
-    Widget child;
-    if (model.visibleEnabledOrderedIndexs.isEmpty) {
-      child = visibleContextMenuListener(Row(
-        children: [Expanded(child: InkWell())],
-      ));
-    } else {
-      if (model.visibleEnabledOrderedIndexs.contains(model.currentTab)) {
-        child = entries[model.currentTab].widget;
-      } else {
-        debugPrint("should not happen! currentTab not in visibleIndexs");
-        Future.delayed(Duration.zero, () {
-          model.setCurrentTab(model.visibleEnabledOrderedIndexs[0]);
-        });
-        child = entries[0].widget;
-      }
-    }
+    Widget child = entries[0].widget;  // 直接显示通讯录
     return Expanded(
         child: child.marginSymmetric(
             vertical: (isDesktop || isWebDesktop) ? 12.0 : 6.0));
