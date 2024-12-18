@@ -254,7 +254,7 @@ class _PeerTabPageState extends State<PeerTabPage>
           switchType: SwitchType.scheckbox,
           text: model.tabTooltip(tabIndex),
           currentValue: model.isVisibleEnabled[tabIndex],
-          setter: (show) async {
+          setter: (show) {
             model.setTabVisible(tabIndex, show);
             // Do not hide the current menu (checkbox)
             // cancelFunc();
@@ -309,31 +309,31 @@ class _PeerTabPageState extends State<PeerTabPage>
         context: context,
         toolTip: translate('Delete'),
         onTap: () {
-          onSubmit() async {
+          onSubmit() {
             final peers = model.selectedPeers;
             switch (model.currentTab) {
               case 0:
                 for (var p in peers) {
-                  await bind.mainRemovePeer(id: p.id);
+                  bind.mainRemovePeer(id: p.id);
                 }
-                await bind.mainLoadRecentPeers();
+                bind.mainLoadRecentPeers();
                 break;
               case 1:
-                final favs = (await bind.mainGetFav()).toList();
+                final favs = (bind.mainGetFav()).toList();
                 peers.map((p) {
                   favs.remove(p.id);
                 }).toList();
-                await bind.mainStoreFav(favs: favs);
-                await bind.mainLoadFavPeers();
+                bind.mainStoreFav(favs: favs);
+                bind.mainLoadFavPeers();
                 break;
               case 2:
                 for (var p in peers) {
-                  await bind.mainRemoveDiscovered(id: p.id);
+                  bind.mainRemoveDiscovered(id: p.id);
                 }
-                await bind.mainLoadLanPeers();
+                bind.mainLoadLanPeers();
                 break;
               case 3:
-                await gFFI.abModel.deletePeers(peers.map((p) => p.id).toList());
+                gFFI.abModel.deletePeers(peers.map((p) => p.id).toList());
                 break;
               default:
                 break;
@@ -355,15 +355,15 @@ class _PeerTabPageState extends State<PeerTabPage>
       child: _hoverAction(
         context: context,
         toolTip: translate('Add to Favorites'),
-        onTap: () async {
+        onTap: () {
           final peers = model.selectedPeers;
-          final favs = (await bind.mainGetFav()).toList();
+          final favs = (bind.mainGetFav()).toList();
           for (var p in peers) {
             if (!favs.contains(p.id)) {
               favs.add(p.id);
             }
           }
-          await bind.mainStoreFav(favs: favs);
+          bind.mainStoreFav(favs: favs);
           model.setMultiSelectionMode(false);
           showToast(translate('Successful'));
         },
@@ -403,9 +403,9 @@ class _PeerTabPageState extends State<PeerTabPage>
               context: context,
               toolTip: translate('Edit Tag'),
               onTap: () {
-                editAbTagDialog(List.empty(), (selectedTags) async {
+                editAbTagDialog(List.empty(), (selectedTags) {
                   final peers = model.selectedPeers;
-                  await gFFI.abModel.changeTagForPeers(
+                  gFFI.abModel.changeTagForPeers(
                       peers.map((p) => p.id).toList(), selectedTags);
                   model.setMultiSelectionMode(false);
                   showToast(translate('Successful'));
@@ -459,8 +459,8 @@ class _PeerTabPageState extends State<PeerTabPage>
           Icons.tag_rounded,
           size: 18,
         ),
-        onTap: () async {
-          await bind.mainSetLocalOption(
+        onTap: () {
+          bind.mainSetLocalOption(
               key: kOptionHideAbTagsPanel,
               value: hideAbTagsPanel.value ? defaultOptionNo : "Y");
           hideAbTagsPanel.value = !hideAbTagsPanel.value;
@@ -734,11 +734,11 @@ class _PeerViewDropdownState extends State<PeerViewDropdown> {
                       dense: true,
                       isOptionFixed(kOptionPeerCardUiType)
                           ? null
-                          : (PeerUiType? v) async {
+                          : (PeerUiType? v) {
                               if (v != null) {
                                 peerCardUiType.value = v;
                                 setState(() {});
-                                await bind.setLocalFlutterOption(
+                                bind.setLocalFlutterOption(
                                   k: kOptionPeerCardUiType,
                                   v: peerCardUiType.value.index.toString(),
                                 );
@@ -818,10 +818,10 @@ class _PeerSortDropdownState extends State<PeerSortDropdown> {
                   height: 36,
                   child: getRadio(
                       Text(translate(e), style: style), e, peerSort.value,
-                      dense: true, (String? v) async {
+                      dense: true, (String? v) {
                     if (v != null) {
                       peerSort.value = v;
-                      await bind.setLocalFlutterOption(
+                      bind.setLocalFlutterOption(
                         k: kOptionPeerSorting,
                         v: peerSort.value,
                       );
