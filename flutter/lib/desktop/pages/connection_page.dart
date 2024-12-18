@@ -278,13 +278,23 @@ class _ConnectionPageState extends State<ConnectionPage>
         Expanded(
             child: Column(
           children: [
-            Row(
-              children: [
-                Flexible(child: _buildRemoteIDTextField(context)),
-              ],
-            ).marginOnly(top: 22),
-            SizedBox(height: 12),
-            Divider().paddingOnly(right: 12),
+            Offstage(
+              offstage: true, // 隐藏远程控制输入框
+              child: Row(
+                children: [
+                  Flexible(child: _buildRemoteIDTextField(context)),
+                ],
+              ).marginOnly(top: 22),
+            ),
+            Offstage(
+              offstage: true, // 隐藏分隔符
+              child: Column(
+                children: [
+                  SizedBox(height: 12),
+                  Divider().paddingOnly(right: 12),
+                ],
+              ),
+            ),
             Expanded(child: PeerTabPage()),
           ],
         ).paddingOnly(left: 12.0)),
