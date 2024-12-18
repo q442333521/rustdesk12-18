@@ -83,11 +83,6 @@ class _DesktopHomePageState extends State<DesktopHomePage>
         child: loadLogo(),
       ),
       buildTip(context),
-      // 隐藏ID显示，但保留设置按钮
-      if (!isOutgoingOnly) Offstage(
-        offstage: true, // 设置为true来隐藏ID显示
-        child: buildIDBoard(context),
-      ),
       Container(
         margin: const EdgeInsets.only(left: 20, right: 11),
         height: 57,
