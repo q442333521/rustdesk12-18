@@ -91,10 +91,12 @@ jobs:
           flutter config --enable-windows-desktop
 
       - name: Flutter clean
+        working-directory: ./flutter
         run: |
           flutter clean
 
       - name: Flutter pub get
+        working-directory: ./flutter
         run: |
           flutter pub get
 
