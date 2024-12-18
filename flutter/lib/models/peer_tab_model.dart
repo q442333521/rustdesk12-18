@@ -22,29 +22,20 @@ class PeerTabModel with ChangeNotifier {
   WeakReference<FFI> parent;
   int get currentTab => _currentTab;
   int _currentTab = 0; // index in tabNames
-  static const int maxTabCount = 5;
+  static const int maxTabCount = 2;
   static const List<String> tabNames = [
-    'Recent sessions',
-    'Favorites',
-    'Discovered',
     'Address book',
     'Group',
   ];
   static const List<IconData> icons = [
-    Icons.access_time_filled,
-    Icons.star,
-    Icons.explore,
     IconFont.addressBook,
     Icons.group,
   ];
   List<bool> isEnabled = List.from([
-    true,
-    true,
-    !isWeb,
     !(bind.isDisableAb() || bind.isDisableAccount()),
     !(bind.isDisableGroupPanel() || bind.isDisableAccount()),
   ]);
-  final List<bool> _isVisible = List.filled(maxTabCount, true, growable: false);
+  final List<bool> _isVisible = List.filled(2, true, growable: false);
   List<bool> get isVisibleEnabled => () {
         final list = _isVisible.toList();
         for (int i = 0; i < maxTabCount; i++) {
