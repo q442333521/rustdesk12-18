@@ -61,6 +61,29 @@ jobs:
         with:
           vcpkgGitCommitId: ${{ env.VCPKG_COMMIT_ID }}
 
+      - name: Install vcpkg dependencies
+        run: |
+          vcpkg install ffmpeg:x64-windows-static
+          vcpkg integrate install
+        env:
+          VCPKG_ROOT: ${{ github.workspace }}/vcpkg
+          VCPKG_DEFAULT_TRIPLET: x64-windows-static
+
+      - name: Setup vcpkg environment
+        run: |
+          echo "VCPKG_ROOT=${{ github.workspace }}/vcpkg" >> $GITHUB_ENV
+          echo "${{ github.workspace }}/vcpkg/installed/x64-windows-static/include" >> $GITHUB_PATH
+
+      - name: Cache vcpkg
+        uses: actions/cache@v3
+        with:
+          path: |
+            ${{ github.workspace }}/vcpkg/installed
+            ${{ github.workspace }}/vcpkg/packages
+          key: vcpkg-${{ runner.os }}-${{ hashFiles('**/vcpkg.json') }}
+          restore-keys: |
+            vcpkg-${{ runner.os }}-
+
       - name: Install Rust toolchain
         uses: actions-rs/toolchain@v1
         with:
@@ -111,13 +134,11 @@ jobs:
 
       - name: Build rustdesk
         run: |
-          Invoke-WebRequest -Uri https://github.com/rustdesk-org/rdev/releases/download/usbmmidd_v2/usbmmidd_v2.zip -OutFile usbmmidd_v2.zip
-          Expand-Archive usbmmidd_v2.zip -DestinationPath .
-          python3 .\build.py --portable --hwcodec --flutter --vram --skip-portable-pack
-          Remove-Item -Path usbmmidd_v2\Win32 -Recurse
-          Remove-Item -Path "usbmmidd_v2\deviceinstaller64.exe", "usbmmidd_v2\deviceinstaller.exe", "usbmmidd_v2\usbmmidd.bat"
-          mv ./flutter/build/windows/x64/runner/Release ./rustdesk
-          mv -Force .\usbmmidd_v2 ./rustdesk
+          cargo build --features hwcodec,vram,flutter --lib --release
+        env:
+          VCPKG_ROOT: ${{ github.workspace }}/vcpkg
+          LIBCLANG_PATH: "C:\\Program Files\\Microsoft Visual Studio\\2022\\Enterprise\\VC\\Tools\\LLVM\\x64\\bin"
+          FFMPEG_DIR: ${{ github.workspace }}/vcpkg/installed/x64-windows-static
 
       - name: find Runner.res
         continue-on-error: true
