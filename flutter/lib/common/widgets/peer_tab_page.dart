@@ -12,7 +12,6 @@ import 'package:flutter_hbb/desktop/widgets/material_mod_popup_menu.dart'
 import 'package:flutter_hbb/desktop/widgets/tabbar_widget.dart';
 import 'package:flutter_hbb/models/ab_model.dart';
 import 'package:flutter_hbb/models/peer_model.dart';
-
 import 'package:flutter_hbb/models/peer_tab_model.dart';
 import 'package:flutter_hbb/models/state_model.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -22,6 +21,8 @@ import 'package:pull_down_button/pull_down_button.dart';
 
 import '../../common.dart';
 import '../../models/platform_model.dart';
+
+const kOptionPeerSorting = 'peer-sorting';
 
 class PeerTabPage extends StatefulWidget {
   const PeerTabPage({Key? key}) : super(key: key);
@@ -785,18 +786,19 @@ class PeerSortDropdown extends StatefulWidget {
 }
 
 class _PeerSortDropdownState extends State<PeerSortDropdown> {
-  _PeerSortDropdownState() {
-    if (!PeerSortType.values.contains(peerSort.value)) {
-      _loadLocalOptions();
-    }
+  final RxString peerSort = PeerSortType.remoteId.toString().obs;
+
+  @override
+  void initState() {
+    super.initState();
+    _loadLocalOptions();
   }
 
-  void _loadLocalOptions() {
-    peerSort.value = PeerSortType.remoteId;
-    bind.setLocalFlutterOption(
-      k: kOptionPeerSorting,
-      v: peerSort.value,
-    );
+  _loadLocalOptions() {
+    final v = bind.getLocalFlutterOption(k: kOptionPeerSorting);
+    if (v != null && v.isNotEmpty) {
+      peerSort.value = v;
+    }
   }
 
   @override
@@ -818,9 +820,9 @@ class _PeerSortDropdownState extends State<PeerSortDropdown> {
                   height: 36,
                   child: getRadio(
                       Text(translate(e), style: style), e, peerSort.value,
-                      dense: true, (String? v) {
+                      dense: true, (dynamic v) {
                     if (v != null) {
-                      peerSort.value = v;
+                      peerSort.value = v.toString();
                       bind.setLocalFlutterOption(
                         k: kOptionPeerSorting,
                         v: peerSort.value,
