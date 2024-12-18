@@ -69,107 +69,40 @@ class _DesktopHomePageState extends State<DesktopHomePage>
   }
 
   Widget buildLeftPane(BuildContext context) {
-    final isIncomingOnly = bind.isIncomingOnly();
-    final isOutgoingOnly = bind.isOutgoingOnly();
-    final children = <Widget>[
-      if (!isOutgoingOnly) buildPresetPasswordWarning(),
-      if (bind.isCustomClient())
-        Align(
-          alignment: Alignment.center,
-          child: loadPowered(context),
-        ),
-      Align(
-        alignment: Alignment.center,
-        child: loadLogo(),
-      ),
-      buildTip(context),
-      Container(
-        margin: const EdgeInsets.only(left: 20, right: 11),
-        height: 57,
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.end,
-          children: [
-            buildPopupMenu(context),
-          ],
-        ),
-      ),
-      if (!isOutgoingOnly) buildPasswordBoard(context),
-      FutureBuilder<Widget>(
-        future: Future.value(
-            Obx(() => buildHelpCards(stateGlobal.updateUrl.value))),
-        builder: (_, data) {
-          if (data.hasData) {
-            if (isIncomingOnly) {
-              if (isInHomePage()) {
-                Future.delayed(Duration(milliseconds: 300), () {
-                  _updateWindowSize();
-                });
-              }
-            }
-            return data.data!;
-          } else {
-            return const SizedBox.shrink();
-          }
-        },
-      ),
-      buildPluginEntry(),
-    ];
-    if (isIncomingOnly) {
-      children.addAll([
-        Divider(),
-        OnlineStatusWidget(
-          onSvcStatusChanged: () {
-            if (isInHomePage()) {
-              Future.delayed(Duration(milliseconds: 300), () {
-                _updateWindowSize();
-              });
-            }
-          },
-        ).marginOnly(bottom: 6, right: 6)
-      ]);
-    }
     final textColor = Theme.of(context).textTheme.titleLarge?.color;
     return ChangeNotifierProvider.value(
       value: gFFI.serverModel,
       child: Container(
-        width: isIncomingOnly ? 280.0 : 200.0,
+        width: 200.0,
         color: Theme.of(context).colorScheme.background,
         child: Stack(
           children: [
-            SingleChildScrollView(
-              controller: _leftPaneScrollController,
-              child: Column(
-                key: _childKey,
-                children: children,
-              ),
-            ),
-            if (isOutgoingOnly)
-              Positioned(
-                bottom: 6,
-                left: 12,
-                child: Align(
-                  alignment: Alignment.centerLeft,
-                  child: InkWell(
-                    child: Obx(
-                      () => Icon(
-                        Icons.settings,
-                        color: _editHover.value
-                            ? textColor
-                            : Colors.grey.withOpacity(0.5),
-                        size: 22,
-                      ),
+            Positioned(
+              bottom: 6,
+              left: 12,
+              child: Align(
+                alignment: Alignment.centerLeft,
+                child: InkWell(
+                  child: Obx(
+                    () => Icon(
+                      Icons.settings,
+                      color: _editHover.value
+                          ? textColor
+                          : Colors.grey.withOpacity(0.5),
+                      size: 22,
                     ),
-                    onTap: () => {
-                      if (DesktopSettingPage.tabKeys.isNotEmpty)
-                        {
-                          DesktopSettingPage.switch2page(
-                              DesktopSettingPage.tabKeys[0])
-                        }
-                    },
-                    onHover: (value) => _editHover.value = value,
                   ),
+                  onTap: () => {
+                    if (DesktopSettingPage.tabKeys.isNotEmpty)
+                      {
+                        DesktopSettingPage.switch2page(
+                            DesktopSettingPage.tabKeys[0])
+                      }
+                  },
+                  onHover: (value) => _editHover.value = value,
                 ),
-              )
+              ),
+            )
           ],
         ),
       ),
