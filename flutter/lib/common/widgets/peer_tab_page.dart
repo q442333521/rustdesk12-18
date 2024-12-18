@@ -52,6 +52,24 @@ class _PeerTabPageState extends State<PeerTabPage>
             force: hint == null ? ForcePullAb.listAndCurrent : null,
             quiet: false)),
     _TabEntry(
+        RecentPeersView(
+          menuPadding: _menuPadding(),
+          emptyBuilder: (context) => SizedBox(), // 空白内容
+        ),
+        bind.mainLoadRecentPeers),
+    _TabEntry(
+        FavoritePeersView(
+          menuPadding: _menuPadding(),
+          emptyBuilder: (context) => SizedBox(), // 空白内容
+        ),
+        bind.mainLoadFavPeers),
+    _TabEntry(
+        DiscoveredPeersView(
+          menuPadding: _menuPadding(),
+          emptyBuilder: (context) => SizedBox(), // 空白内容
+        ),
+        bind.mainDiscover),
+    _TabEntry(
       MyGroup(
         menuPadding: _menuPadding(),
       ),
@@ -92,10 +110,12 @@ class _PeerTabPageState extends State<PeerTabPage>
   @override
   void initState() {
     super.initState();
+    _loadLocalOptions();
     // 设置通讯录为默认标签页并加载
     Future.delayed(Duration.zero, () async {
-      await handleTabSelection(0);
-      entries[0].load();
+      final model = Provider.of<PeerTabModel>(context, listen: false);
+      model.setCurrentTab(0); // 设置通讯录为当前标签页
+      entries[0].load(); // 加载通讯录内容
     });
   }
 
@@ -188,7 +208,14 @@ class _PeerTabPageState extends State<PeerTabPage>
 
   Widget _createPeersView() {
     final model = Provider.of<PeerTabModel>(context);
-    Widget child = entries[0].widget;  // 直接显示通讯录
+    Widget child;
+    if (model.currentTab == 0) {
+      // 通讯录标签页
+      child = entries[0].widget;
+    } else {
+      // 其他标签页显示空白
+      child = const SizedBox();
+    }
     return Expanded(
         child: child.marginSymmetric(
             vertical: (isDesktop || isWebDesktop) ? 12.0 : 6.0));
