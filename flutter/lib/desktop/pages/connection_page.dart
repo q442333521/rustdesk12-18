@@ -61,7 +61,34 @@ class _OnlineStatusWidgetState extends State<OnlineStatusWidget> {
     super.dispose();
   }
 
-
+  Widget basicWidget() {
+    return Row(
+      children: [
+        Obx(() => _buildConnStatusMsg()),
+        Obx(() {
+          if (_svcIsUsingPublicServer.value) {
+            return Row(
+              children: [
+                Text(
+                  ' - ' + translate('public_relay_tip'),
+                  style: TextStyle(fontSize: em),
+                ),
+                TextButton(
+                  onPressed: onUsePublicServerGuide,
+                  child: Text(
+                    translate('learn_more'),
+                    style: TextStyle(fontSize: em),
+                  ),
+                ),
+              ],
+            );
+          } else {
+            return Container();
+          }
+        }),
+      ],
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -207,6 +234,16 @@ class _ConnectionPageState extends State<ConnectionPage>
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+              // 添加 logo 图片
+              Container(
+                width: 150,  // logo 宽度
+                height: 50,  // logo 高度
+                margin: EdgeInsets.only(bottom: 20),
+                child: Image.asset(
+                  'assets/images/logo.png',  // 确保路径正确
+                  fit: BoxFit.contain,
+                ),
+              ),
               Text(
                 'TopDebug远程调试软件',
                 style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
