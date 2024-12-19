@@ -61,14 +61,48 @@ class _OnlineStatusWidgetState extends State<OnlineStatusWidget> {
     super.dispose();
   }
 
-
-
   @override
   Widget build(BuildContext context) {
     final isIncomingOnly = bind.isIncomingOnly();
+
+    Widget startServiceWidget() => Offstage(
+          offstage: !_svcStopped.value,
+          child: InkWell(
+                  onTap: () async {
+                    await start_service(true);
+                  },
+                  child: Text(translate("Start service"),
+                      style: TextStyle(
+                          decoration: TextDecoration.underline, fontSize: em)))
+              .marginOnly(left: em),
+        );
+
+    Widget setupServerWidget() => Flexible(
+          child: Offstage(
+            offstage: !(!_svcStopped.value &&
+                _svcIsUsingPublicServer.value &&
+                !isIncomingOnly),
+            child: InkWell(
+                onTap: onUsePublicServerGuide,
+                child: Row(
+                  children: [
+                    Text(translate("Setup server"),
+                        style: TextStyle(
+                            decoration: TextDecoration.underline, fontSize: em)),
+                    Icon(Icons.open_in_new_rounded, size: em),
+                  ],
+                )),
+          ),
+        );
+
     return Container(
       height: height,
-      child: basicWidget(),
+      child: Row(
+        children: [
+          startServiceWidget(),
+          setupServerWidget(),
+        ],
+      ),
     ).paddingOnly(right: isIncomingOnly ? 8 : 0);
   }
 
@@ -190,7 +224,6 @@ class _ConnectionPageState extends State<ConnectionPage>
     super.onWindowClose();
     bind.mainOnMainWindowClose();
   }
-
 
   @override
   Widget build(BuildContext context) {
