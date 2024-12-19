@@ -240,7 +240,7 @@ class _ConnectionPageState extends State<ConnectionPage>
                 height: 50,  // logo 高度
                 margin: EdgeInsets.only(bottom: 20),
                 child: Image.asset(
-                  'assets/images/logo.png',  // 确保路径正确
+                  'assets/logo.png',  // 修改为正确的路径
                   fit: BoxFit.contain,
                 ),
               ),
