@@ -543,7 +543,7 @@ class _ConnectionPageState extends State<ConnectionPage>
                   Button(onTap: onConnect, text: "Connect"),
                 ],
               ),
-            )
+            ),
           ],
         ),
       ),
