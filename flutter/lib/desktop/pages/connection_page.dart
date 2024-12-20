@@ -480,75 +480,62 @@ class _ConnectionPageState extends State<ConnectionPage>
                     return Align(
                       alignment: Alignment.topLeft,
                       child: Container(
-                          decoration: BoxDecoration(
-                            boxShadow: [
-                              BoxShadow(
-                                color: Colors.black.withOpacity(0.3),
-                                blurRadius: 5,
-                                spreadRadius: 1,
+                        decoration: BoxDecoration(
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.black.withOpacity(0.3),
+                              blurRadius: 5,
+                              spreadRadius: 1,
+                            ),
+                          ],
+                        ),
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(5),
+                          child: Material(
+                            elevation: 4,
+                            child: ConstrainedBox(
+                              constraints: BoxConstraints(
+                                maxHeight: maxHeight,
+                                maxWidth: 319,
                               ),
-                            ],
-                          ),
-                          child: ClipRRect(
-                              borderRadius: BorderRadius.circular(5),
-                              child: Material(
-                                elevation: 4,
-                                child: ConstrainedBox(
-                                  constraints: BoxConstraints(
-                                    maxHeight: maxHeight,
-                                    maxWidth: 319,
-                                  ),
-                                  child: peers.isEmpty && isPeersLoading
-                                      ? Container(
-                                          height: 80,
-                                          child: Center(
-                                            child: CircularProgressIndicator(
-                                              strokeWidth: 2,
-                                            ),
-                                          ),
-                                        )
-                                      : Padding(
-                                          padding:
-                                              const EdgeInsets.only(top: 5),
-                                          child: ListView(
-                                            children: options
-                                                .map((peer) =>
-                                                    AutocompletePeerTile(
-                                                        onSelect: () =>
-                                                            onSelected(peer),
-                                                        peer: peer))
-                                                .toList(),
-                                          ),
+                              child: peers.isEmpty && isPeersLoading
+                                  ? Container(
+                                      height: 80,
+                                      child: Center(
+                                        child: CircularProgressIndicator(
+                                          strokeWidth: 2,
                                         ),
-                                ),
-                              ))),
+                                      ),
+                                    )
+                                  : Padding(
+                                      padding: const EdgeInsets.only(top: 5),
+                                      child: ListView(
+                                        children: options
+                                            .map((peer) =>
+                                                AutocompletePeerTile(
+                                                  onSelect: () =>
+                                                      onSelected(peer),
+                                                  peer: peer,
+                                                ))
+                                            .toList(),
+                                      ),
+                                    ),
+                            ),
+                          ),
+                        ),
+                      ),
                     );
                   },
-                ))),
-              ],
-            ),
-            Padding(
-              padding: const EdgeInsets.only(top: 13.0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                  Button(
-                    isOutline: true,
-                    onTap: () => onConnect(isFileTransfer: true),
-                    text: "Transfer file",
-                  ),
-                  const SizedBox(
-                    width: 17,
-                  ),
-                  Button(onTap: onConnect, text: "Connect"),
-                ],
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );
     return Container(
-        constraints: const BoxConstraints(maxWidth: 600), child: w);
+      constraints: const BoxConstraints(maxWidth: 600),
+      child: w,
+    );
   }
 }
