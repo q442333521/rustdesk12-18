@@ -195,68 +195,33 @@ class _ConnectionPageState extends State<ConnectionPage>
   @override
   Widget build(BuildContext context) {
     final isOutgoingOnly = bind.isOutgoingOnly();
-    return Row(  // 使用Row来创建左右布局
+    return Column(
       children: [
-        // 左侧软件说明区域
-        Container(
-          width: 250,  // 设置合适的宽度
-          padding: EdgeInsets.all(16),
-          decoration: BoxDecoration(
-            border: Border(right: BorderSide(color: Colors.grey[300]!)),
-          ),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                'TopDebug远程调试软件',
-                style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-              ),
-              SizedBox(height: 16),
-              Text(
-                '软件功能介绍：',
-                style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-              ),
-              SizedBox(height: 8),
-              Text('1. 远程控制：安全快速的远程桌面访问'),
-              Text('2. 文件传输：便捷的跨设备文件传输'),
-              Text('3. 安全加密：端到端加密确保数据安全'),
-            ],
-          ),
-        ),
-        // 右侧主要内容区域
         Expanded(
-          child: Column(
-            children: [
-              Expanded(
-                child: Column(
-                  children: [
-                    // 隐藏原有的输入框和分隔符
-                    Offstage(
-                      offstage: true,
-                      child: Row(
-                        children: [
-                          Flexible(child: _buildRemoteIDTextField(context)),
-                        ],
-                      ).marginOnly(top: 22),
-                    ),
-                    Offstage(
-                      offstage: true,
-                      child: Column(
-                        children: [
-                          SizedBox(height: 12),
-                          Divider().paddingOnly(right: 12),
-                        ],
-                      ),
-                    ),
-                    Expanded(child: PeerTabPage()),
-                  ],
-                ).paddingOnly(left: 12.0),
+            child: Column(
+          children: [
+            Offstage(
+              offstage: true, // 隐藏远程控制输入框
+              child: Row(
+                children: [
+                  Flexible(child: _buildRemoteIDTextField(context)),
+                ],
+              ).marginOnly(top: 22),
+            ),
+            Offstage(
+              offstage: true, // 隐藏分隔符
+              child: Column(
+                children: [
+                  SizedBox(height: 12),
+                  Divider().paddingOnly(right: 12),
+                ],
               ),
-              if (!isOutgoingOnly) const Divider(height: 1),
-              if (!isOutgoingOnly) OnlineStatusWidget()
-            ],
-          ),
-        ),
+            ),
+            Expanded(child: PeerTabPage()),
+          ],
+        ).paddingOnly(left: 12.0)),
+        if (!isOutgoingOnly) const Divider(height: 1),
+        if (!isOutgoingOnly) OnlineStatusWidget()
       ],
     );
   }
