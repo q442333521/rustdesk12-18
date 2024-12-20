@@ -218,7 +218,6 @@ class _ConnectionPageState extends State<ConnectionPage>
     bind.mainOnMainWindowClose();
   }
 
-
   @override
   Widget build(BuildContext context) {
     final isOutgoingOnly = bind.isOutgoingOnly();
@@ -254,9 +253,40 @@ class _ConnectionPageState extends State<ConnectionPage>
                 style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
               ),
               SizedBox(height: 8),
-              Text('1. 远程控制：安全快速的远程桌面访问'),
-              Text('2. 文件传输：便捷的跨设备文件传输'),
-              Text('3. 安全加密：端到端加密确保数据安全'),
+              Expanded(
+                child: SingleChildScrollView(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text('1. 远程控制：安全快速的远程桌面访问'),
+                      SizedBox(height: 8),
+                      Text('2. 文件传输：便捷的跨设备文件传输'),
+                      SizedBox(height: 8),
+                      Text('3. 安全加密：端到端加密确保数据安全'),
+                    ],
+                  ),
+                ),
+              ),
+              // 底部设置按钮
+              Container(
+                width: double.infinity,
+                margin: EdgeInsets.only(top: 16),
+                child: ElevatedButton.icon(
+                  onPressed: () {
+                    // 处理设置按钮点击事件
+                    bind.mainShowSettingDialog();
+                  },
+                  icon: Icon(Icons.settings, color: Colors.grey[700]),
+                  label: Text(
+                    '设置',
+                    style: TextStyle(color: Colors.grey[800]),
+                  ),
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.grey[200],
+                    padding: EdgeInsets.symmetric(vertical: 12),
+                  ),
+                ),
+              ),
             ],
           ),
         ),
@@ -363,7 +393,7 @@ class _ConnectionPageState extends State<ConnectionPage>
                         );
                       }
                       String textToFind = textEditingValue.text.toLowerCase();
-                      _autocompleteOpts =  peers
+                      _autocompleteOpts = peers
                           .where((peer) =>
                               peer.id.toLowerCase().contains(textToFind) ||
                               peer.username
@@ -493,7 +523,7 @@ class _ConnectionPageState extends State<ConnectionPage>
                               ))),
                     );
                   },
-                )),
+                ))),
               ],
             ),
             Padding(
