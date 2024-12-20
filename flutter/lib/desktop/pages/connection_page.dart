@@ -61,7 +61,34 @@ class _OnlineStatusWidgetState extends State<OnlineStatusWidget> {
     super.dispose();
   }
 
-
+  Widget basicWidget() {
+    return Row(
+      children: [
+        Obx(() => _buildConnStatusMsg()),
+        Obx(() {
+          if (_svcIsUsingPublicServer.value) {
+            return Row(
+              children: [
+                Text(
+                  ' - ' + translate('public_relay_tip'),
+                  style: TextStyle(fontSize: em),
+                ),
+                TextButton(
+                  onPressed: onUsePublicServerGuide,
+                  child: Text(
+                    translate('learn_more'),
+                    style: TextStyle(fontSize: em),
+                  ),
+                ),
+              ],
+            );
+          } else {
+            return Container();
+          }
+        }),
+      ],
+    );
+  }
 
   @override
   Widget build(BuildContext context) {

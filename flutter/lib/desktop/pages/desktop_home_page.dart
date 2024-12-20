@@ -75,11 +75,13 @@ class _DesktopHomePageState extends State<DesktopHomePage>
       child: Container(
         width: 200.0,
         color: Theme.of(context).colorScheme.background,
-        child: Stack(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Positioned(
-              bottom: 6,
-              left: 12,
+            // 在底部添加设置按钮
+            Expanded(child: Container()), // 用于将设置按钮推到底部
+            Padding(
+              padding: EdgeInsets.only(left: 12, bottom: 6),
               child: Align(
                 alignment: Alignment.centerLeft,
                 child: InkWell(
@@ -102,7 +104,7 @@ class _DesktopHomePageState extends State<DesktopHomePage>
                   onHover: (value) => _editHover.value = value,
                 ),
               ),
-            )
+            ),
           ],
         ),
       ),
