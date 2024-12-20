@@ -505,7 +505,8 @@ class _ConnectionPageState extends State<ConnectionPage>
                                             child: CircularProgressIndicator(
                                               strokeWidth: 2,
                                             ),
-                                          ))
+                                          ),
+                                        )
                                       : Padding(
                                           padding:
                                               const EdgeInsets.only(top: 5),
