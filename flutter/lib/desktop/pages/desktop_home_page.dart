@@ -227,39 +227,50 @@ class _DesktopHomePageState extends State<DesktopHomePage>
   Widget buildTip(BuildContext context) {
     final isOutgoingOnly = bind.isOutgoingOnly();
     return Padding(
-      padding:
-          const EdgeInsets.only(left: 20.0, right: 16, top: 16.0, bottom: 5),
+      padding: const EdgeInsets.only(left: 20.0, right: 16, top: 16.0, bottom: 5),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Column(
-            children: [
-              if (!isOutgoingOnly)
-                Align(
-                  alignment: Alignment.centerLeft,
-                  child: Text(
-                    translate("Your Desktop"),
-                    style: Theme.of(context).textTheme.titleLarge,
-                  ),
-                ),
-            ],
-          ),
-          SizedBox(
-            height: 10.0,
-          ),
-          if (!isOutgoingOnly)
-            Text(
-              translate("desk_tip"),
-              overflow: TextOverflow.clip,
-              style: Theme.of(context).textTheme.bodySmall,
+          // Logo
+          Container(
+            width: 150,
+            height: 50,
+            margin: EdgeInsets.symmetric(horizontal: 25, vertical: 10),
+            child: Image.asset(
+              'assets/logo.png',
+              fit: BoxFit.contain,
             ),
-          if (isOutgoingOnly)
-            Text(
-              translate("outgoing_only_desk_tip"),
-              overflow: TextOverflow.clip,
-              style: Theme.of(context).textTheme.bodySmall,
+          ),
+          // 软件标题
+          Padding(
+            padding: EdgeInsets.symmetric(horizontal: 20, vertical: 5),
+            child: Text(
+              'TopDebug远程调试软件',
+              style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
             ),
+          ),
+          // 功能介绍标题
+          Padding(
+            padding: EdgeInsets.symmetric(horizontal: 20, vertical: 5),
+            child: Text(
+              '软件功能介绍：',
+              style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+            ),
+          ),
+          // 功能介绍内容
+          Padding(
+            padding: EdgeInsets.symmetric(horizontal: 20),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text('1. 远程控制：安全快速的远程桌面访问'),
+                Text('2. 文件传输：便捷的跨设备文件传输'),
+                Text('3. 安全加密：端到端加密确保数据安全'),
+                Text('4. 点击登录开始操作'),
+              ],
+            ),
+          ),
         ],
       ),
     );
