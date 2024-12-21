@@ -520,7 +520,7 @@ class _DesktopHomePageState extends State<DesktopHomePage>
                                             fontSize: 12),
                                       )).marginOnly(top: 6)),
                             ]
-                          : <Widget>[])))),
+                          : <Widget>[]))),
         ),
         if (closeButton != null && closeButton == true)
           Positioned(
