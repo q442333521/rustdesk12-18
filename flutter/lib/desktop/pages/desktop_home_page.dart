@@ -276,7 +276,7 @@ class _DesktopHomePageState extends State<DesktopHomePage>
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text('1. 远程控制：安全快速的远程桌面访问'),
+                Text('1. 远程控制：安全快速的远程调试'),
                 Text('2. 文件传输：便捷的跨设备文件传输'),
                 Text('3. 安全加密：端到端加密确保数据安全'),
                 Text('4. 点击登录开始操作'),
